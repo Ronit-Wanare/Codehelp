@@ -1,0 +1,22 @@
+vector<int> topologicalSort(unordered_map<int,vector<int>>&adj , int n , vector<int>&indeg){
+    queue<int>q ; 
+    vector<int>ans;
+    for(int i=1;i<=n;i++){
+        if(indeg[i]==0){
+            q.push(i);
+        }
+    }
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        ans.push_back(node);
+        for(auto nei : adj[node]){
+            indeg[nei]--;
+            if(indeg[nei]==0){
+                q.push(nei);
+            }
+        }
+        
+    }
+    return ans;
+}
