@@ -1,0 +1,45 @@
+class Solution {
+public:
+//////////////////////////// Prims Algorithm ////////////////////////////////////////////////
+typedef pair<int,int> ppi ; 
+    int dist(vector<int>a,vector<int>b){
+         int dori = abs(b[1]-a[1]) + abs(a[0]-b[0]);
+        return dori ;
+    }
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int n = points.size() ;
+        // making adj (considering each point as a node)
+        unordered_map<int,vector<pair<int,int>>> adj ; 
+        for(int i =0 ; i  < n ; i++){
+            for(int j = i+1;j<n;j++){
+                int distance = dist(points[i],points[j]);
+                adj[i].push_back({j,distance});
+                adj[j].push_back({i,distance});
+            }
+        }
+        // necessary stuff 
+        int sum = 0 ; 
+        vector<bool>visi(n,0); // visited arr  
+        priority_queue<ppi , vector<ppi> , greater<ppi>>pq ;
+        pq.push({0,0}); // distance  , node ; 
+
+        while(!pq.empty()){
+            auto p = pq.top();
+            pq.pop();
+            int node = p.second ;
+            int dist = p.first ; 
+            if(visi[node]) continue ; 
+            visi[node] = true ; 
+            sum += dist ; 
+            for(auto nei : adj[node]){
+                int v = nei.first ; 
+                int c = nei.second ;
+                if(!visi[v]){
+                    pq.push({c,v});
+                }
+            } 
+        }
+        return sum ; 
+
+    }
+};
